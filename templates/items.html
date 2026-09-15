@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>All Lost & Found Items</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            margin: 25px auto;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .search-box input,
+        .search-box select {
+            padding: 10px;
+            margin: 5px;
+            width: 220px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-box button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .items-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .item-card {
+            background: white;
+            width: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .item-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .lost {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .found {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .claimed {
+            color: #1565c0;
+            font-weight: bold;
+        }
+
+        .claim-form {
+            background: none;
+            padding: 0;
+            margin-top: 15px;
+            box-shadow: none;
+        }
+
+        .claim-button {
+            background: #2e7d32;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .claim-button:hover {
+            opacity: 0.85;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .navigation button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>📋 All Lost & Found Items</h1>
+
+    <!-- SEARCH AND FILTER -->
+    <div class="search-box">
+
+        <form method="GET" action="/items">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search item name..."
+                value="{{ request.args.get('search', '') }}"
+            >
+
+            <select name="status">
+
+                <option value="">
+                    All Items
+                </option>
+
+                <option value="Lost"
+                    {% if request.args.get('status') == 'Lost' %}
+                        selected
+                    {% endif %}>
+                    Lost Items
+                </option>
+
+                <option value="Found"
+                    {% if request.args.get('status') == 'Found' %}
+                        selected
+                    {% endif %}>
+                    Found Items
+                </option>
+
+            </select>
+
+            <button type="submit">
+                🔎 Search
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ITEMS -->
+    <div class="items-container">
+
+        {% if items %}
+
+            {% for item in items %}
+
+                <div class="item-card">
+
+                    <h2>
+                        {{ item["item_name"] }}
+                    </h2>
+
+
+                    <!-- LOST / FOUND -->
+                    {% if item["status"] == "Lost" %}
+
+                        <p class="lost">
+                            🔴 LOST ITEM
+                        </p>
+
+                    {% else %}
+
+                        <p class="found">
+                            🟢 FOUND ITEM
+                        </p>
+
+                    {% endif %}
+
+
+                    <p>
+                        <b>📂 Category:</b>
+                        {{ item["category"] }}
+                    </p>
+
+
+                    <p>
+                        <b>🎨 Color:</b>
+                        {{ item["color"] }}
+                    </p>
+
+
+                    <p>
+                        <b>📍 Location:</b>
+                        {{ item["location"] }}
+                    </p>
+
+
+                    <p>
+                        <b>📅 Date:</b>
+                        {{ item["date"] }}
+                    </p>
+
+
+                    <p>
+                        <b>📝 Description:</b>
+                        {{ item["description"] }}
+                    </p>
+
+
+                    <p>
+                        <b>📞 Contact:</b>
+                        {{ item["contact"] }}
+                    </p>
+
+
+                    <!-- CLAIM BUTTON -->
+                    {% if item["status"] == "Found" %}
+
+                        {% if item["claimed"] == 0 %}
+
+                            <form
+                                class="claim-form"
+                                method="POST"
+                                action="/claim/{{ item['id'] }}"
+                            >
+
+                                <button
+                                    class="claim-button"
+                                    type="submit"
+                                >
+                                    ✅ Claim This Item
+                                </button>
+
+                            </form>
+
+                        {% else %}
+
+                            <p class="claimed">
+                                ✅ Item Claimed
+                            </p>
+
+                        {% endif %}
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p style="text-align:center;">
+                No items found.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+    <div class="navigation">
+
+        <a href="/">
+            <button>🏠 Home</button>
+        </a>
+
+        <a href="/dashboard">
+            <button>📊 Dashboard</button>
+        </a>
+
+        <a href="/matches">
+            <button>🔍 Find Matches</button>
+        </a>
+
+    </div>
+
+</body>
+</html>

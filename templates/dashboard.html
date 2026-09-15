@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lost & Found Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .dashboard {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 220px;
+            padding: 25px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .number {
+            font-size: 40px;
+            font-weight: bold;
+            margin: 15px;
+        }
+
+        .navigation {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📊 Lost & Found Dashboard</h1>
+
+    <p style="text-align:center;">
+        Overview of reported lost and found items
+    </p>
+
+    <hr>
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h2>🔴 Lost Items</h2>
+            <div class="number">{{ lost_count }}</div>
+        </div>
+
+        <div class="card">
+            <h2>🟢 Found Items</h2>
+            <div class="number">{{ found_count }}</div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Possible Matches</h2>
+            <div class="number">{{ match_count }}</div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="navigation">
+
+        <a href="/">
+            <button>🏠 Home</button>
+        </a>
+
+        <a href="/items">
+            <button>📋 View All Items</button>
+        </a>
+
+        <a href="/matches">
+            <button>🔍 Find Matches</button>
+        </a>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lost & Found Portal</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .form-card {
+            background: white;
+            width: 400px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .form-card h2 {
+            text-align: center;
+        }
+
+        .form-card input,
+        .form-card textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0 15px;
+        }
+
+        .form-card button {
+            display: block;
+            margin: 10px auto;
+            padding: 12px 25px;
+        }
+
+        .options {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>🔎 Lost & Found Portal</h1>
+
+        <p>
+            Report lost items, report found items,
+            and discover possible matches.
+        </p>
+
+    </div>
+
+    <hr>
+
+    <div class="form-container">
+
+        <!-- LOST ITEM -->
+
+        <div class="form-card">
+
+            <h2>🔴 Report a Lost Item</h2>
+
+            <form action="/lost" method="POST">
+
+                <label>Item Name</label><br>
+                <input type="text" name="item_name" required>
+
+                <label>Category</label><br>
+                <input type="text" name="category" required>
+
+                <label>Color</label><br>
+                <input type="text" name="color" required>
+
+                <label>Location</label><br>
+                <input type="text" name="location" required>
+
+                <label>Date</label><br>
+                <input type="date" name="date">
+
+                <label>Description</label><br>
+                <textarea name="description"></textarea>
+                 <label>Contact Information</label><br>
+                <input type="text" name="contact" placeholder="Phone or email">
+
+                <button type="submit">
+                    Submit Lost Item
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- FOUND ITEM -->
+
+        <div class="form-card">
+
+            <h2>🟢 Report a Found Item</h2>
+
+            <form action="/found" method="POST">
+
+                <label>Item Name</label><br>
+                <input type="text" name="item_name" required>
+
+                <label>Category</label><br>
+                <input type="text" name="category" required>
+
+                <label>Color</label><br>
+                <input type="text" name="color" required>
+
+                <label>Location Found</label><br>
+                <input type="text" name="location" required>
+
+                <label>Date</label><br>
+                <input type="date" name="date">
+
+                <label>Description</label><br>
+                <textarea name="description"></textarea>
+
+                <button type="submit">
+                    Submit Found Item
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- OPTIONS -->
+
+    <div class="options">
+
+        <h2>📋 Explore</h2>
+
+        <a href="/items">
+            <button>📋 View All Items</button>
+        </a>
+
+        <a href="/matches">
+            <button>🎯 Find Matches</button>
+        </a>
+
+        <a href="/dashboard">
+            <button>📊 Dashboard</button>
+        </a>
+
+    </div>
+
+</body>
+
+</html>
